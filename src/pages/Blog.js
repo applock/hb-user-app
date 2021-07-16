@@ -6,7 +6,8 @@ import { Grid, Button, Container, Stack, Typography } from '@material-ui/core';
 // components
 import Page from '../components/Page';
 import { BlogPostCard, BlogPostsSort, BlogPostsSearch } from '../components/_dashboard/blog';
-//
+import * as appConstants from '../configs/constants';
+
 import POSTS from '../_mocks_/blog';
 
 // ----------------------------------------------------------------------
@@ -21,7 +22,7 @@ const SORT_OPTIONS = [
 
 export default function Blog() {
   return (
-    <Page title="Dashboard: Blog | Minimal-UI">
+    <Page title={`Dashboard: Blog | ${appConstants.applicationName}`}>
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>

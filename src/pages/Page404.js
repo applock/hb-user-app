@@ -6,6 +6,7 @@ import { Box, Button, Typography, Container } from '@material-ui/core';
 // components
 import { MotionContainer, varBounceIn } from '../components/animate';
 import Page from '../components/Page';
+import * as appConstants from '../configs/constants';
 
 // ----------------------------------------------------------------------
 
@@ -21,7 +22,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 export default function Page404() {
   return (
-    <RootStyle title="404 Page Not Found | Minimal-UI">
+    <RootStyle title={`404 Page Not Found | ${appConstants.applicationName}`}>
       <Container>
         <MotionContainer initial="initial" open>
           <Box sx={{ maxWidth: 480, margin: 'auto', textAlign: 'center' }}>
