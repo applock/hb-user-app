@@ -22,6 +22,7 @@ export default function RegisterForm() {
       .required('First name required'),
     lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
+    mobile: Yup.string().required('Mobile is required').length(10, 'Mobile must be of 10 digits'),
     password: Yup.string().required('Password is required')
   });
 
@@ -30,6 +31,7 @@ export default function RegisterForm() {
       firstName: '',
       lastName: '',
       email: '',
+      mobile: '',
       password: ''
     },
     validationSchema: RegisterSchema,
@@ -70,6 +72,16 @@ export default function RegisterForm() {
             {...getFieldProps('email')}
             error={Boolean(touched.email && errors.email)}
             helperText={touched.email && errors.email}
+          />
+
+          <TextField
+            fullWidth
+            autoComplete="mobile"
+            type="number"
+            label="Mobile"
+            {...getFieldProps('mobile')}
+            error={Boolean(touched.mobile && errors.mobile)}
+            helperText={touched.mobile && errors.mobile}
           />
 
           <TextField

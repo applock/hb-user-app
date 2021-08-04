@@ -13,7 +13,8 @@ import {
   TextField,
   IconButton,
   InputAdornment,
-  FormControlLabel
+  FormControlLabel,
+  MenuItem
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 
@@ -23,8 +24,17 @@ export default function LoginForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
+  const [manualLoginType, setLoginType] = useState('mobile');
+
+  const handleLoginTypeChange = (event) => {
+    setLoginType(event.target.value);
+  };
+
   const LoginSchema = Yup.object().shape({
-    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
+    email:
+      manualLoginType === 'email'
+        ? Yup.string().email('Email must be a valid email address').required('Email is required')
+        : Yup.string().required('Mobile is required').length(10, 'Mobile must be of 10 digits'),
     password: Yup.string().required('Password is required')
   });
 
@@ -41,7 +51,16 @@ export default function LoginForm() {
   });
 
   const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
-
+  const manualLoginTypes = [
+    {
+      value: 'email',
+      label: 'Email Id'
+    },
+    {
+      value: 'mobile',
+      label: 'Mobile Number'
+    }
+  ];
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
   };
@@ -51,10 +70,25 @@ export default function LoginForm() {
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Stack spacing={3}>
           <TextField
+            id="standard-select-logintype"
+            select
+            label="Select"
+            value={manualLoginType}
+            onChange={handleLoginTypeChange}
+            helperText="Please select your login type"
+          >
+            {manualLoginTypes.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <TextField
             fullWidth
             autoComplete="username"
-            type="email"
-            label="Email address"
+            type={manualLoginType === 'email' ? 'email' : 'number'}
+            label={manualLoginType === 'email' ? 'Email address' : 'Mobile'}
             {...getFieldProps('email')}
             error={Boolean(touched.email && errors.email)}
             helperText={touched.email && errors.email}
