@@ -17,13 +17,12 @@ import {
   MenuItem
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
-
+import { BACKEND_HOST } from '../../../configs/constants';
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-
   const [manualLoginType, setLoginType] = useState('mobile');
 
   const handleLoginTypeChange = (event) => {
@@ -46,7 +45,36 @@ export default function LoginForm() {
     },
     validationSchema: LoginSchema,
     onSubmit: () => {
-      navigate('/dashboard', { replace: true });
+      console.log('Starting login process..');
+
+      const loginReqPayload = {
+        [manualLoginType]: formik.values.email,
+        password: formik.values.password,
+        hashedPassword: 0
+      };
+      // const loginUrl = `${process.env.BACKEND_HOST}hb/login/${manualLoginType}`;
+      const loginUrl = `${BACKEND_HOST}hb/login/${manualLoginType}`;
+      console.log(
+        `Login Request: Url - ${loginUrl} | Payload - ${JSON.stringify(loginReqPayload)}`
+      );
+
+      // Calling backend
+      fetch(loginUrl, {
+        method: 'POST',
+        body: JSON.stringify(loginReqPayload),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8'
+        }
+      })
+        .then((response) => response.json())
+        // Displaying results to console
+        .then((json) => console.log(`LOGIN RESPONSE - ${JSON.stringify(json)}`))
+        .then(navigate('/dashboard', { replace: true }))
+        .catch((err) => {
+          // code to handle request errors
+          console.log(`Login errors - ${JSON.stringify(err)}`);
+          navigate('/login', { replace: true });
+        });
     }
   });
 

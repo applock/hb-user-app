@@ -1,2 +1,2 @@
-export const backendHost = 'http://127.0.0.1:8090/ud';
 export const applicationName = 'Make Me Fit';
+export const BACKEND_HOST = 'http://localhost:3010/';
